@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 /**
- * Created by rjb on 2019-06-06.
+ * Created by jt on 2019-06-06.
  */
 @RequiredArgsConstructor
 @Component
