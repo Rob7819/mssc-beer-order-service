@@ -27,4 +27,6 @@ import java.util.UUID;
  */
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     List<Customer> findAllByCustomerNameLike(String customerName);
+
+    //Page<Customer> findAll(Pageable pageable);
 }
