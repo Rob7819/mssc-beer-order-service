@@ -16,7 +16,6 @@ import guru.sfg.brewery.model.BeerDto;
 import guru.sfg.brewery.model.events.AllocationFailureEvent;
 import guru.sfg.brewery.model.events.DeallocateOrderRequest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +80,7 @@ public class BeerOrderManagerImplIT {
                 .build());
     }
 
-    @RepeatedTest(10)
+    @Test
     void testNewToAllocated() throws JsonProcessingException, InterruptedException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -113,7 +112,7 @@ public class BeerOrderManagerImplIT {
         });
     }
 
-    @RepeatedTest(10)
+    @Test
     void testFailedValidation() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -132,7 +131,7 @@ public class BeerOrderManagerImplIT {
         });
     }
 
-    @RepeatedTest(10)
+    @Test
     void testNewToPickedUp() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -177,13 +176,14 @@ public class BeerOrderManagerImplIT {
             assertEquals(BeerOrderStatusEnum.ALLOCATION_EXCEPTION, foundOrder.getOrderStatus());
         });
 
-        AllocationFailureEvent allocationFailureEvent = (AllocationFailureEvent) jmsTemplate.receiveAndConvert(JmsConfig.ALLOCATE_FAILURE_QUEUE);
+        AllocationFailureEvent allocationFailureEvent =
+                (AllocationFailureEvent) jmsTemplate.receiveAndConvert(JmsConfig.ALLOCATE_FAILURE_QUEUE);
 
         assertNotNull(allocationFailureEvent);
         assertThat(allocationFailureEvent.getOrderId()).isEqualTo(savedBeerOrder.getId());
     }
 
-    @RepeatedTest(10)
+    @Test
     void testPartialAllocation() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -201,7 +201,7 @@ public class BeerOrderManagerImplIT {
         });
     }
 
-    @RepeatedTest(10)
+    @Test
     void testValidationPendingToCancel() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -226,7 +226,7 @@ public class BeerOrderManagerImplIT {
         });
     }
 
-    @RepeatedTest(10)
+    @Test
     void testAllocationPendingToCancel() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -251,7 +251,7 @@ public class BeerOrderManagerImplIT {
         });
     }
 
-    @RepeatedTest(10)
+    @Test
     void testAllocatedToCancel() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -274,7 +274,8 @@ public class BeerOrderManagerImplIT {
             assertEquals(BeerOrderStatusEnum.CANCELLED, foundOrder.getOrderStatus());
         });
 
-        DeallocateOrderRequest deallocateOrderRequest = (DeallocateOrderRequest) jmsTemplate.receiveAndConvert(JmsConfig.DEALLOCATE_ORDER_QUEUE);
+        DeallocateOrderRequest deallocateOrderRequest =
+                (DeallocateOrderRequest) jmsTemplate.receiveAndConvert(JmsConfig.DEALLOCATE_ORDER_QUEUE);
 
         assertNotNull(deallocateOrderRequest);
         assertThat(deallocateOrderRequest.getBeerOrderDto().getId()).isEqualTo(savedBeerOrder.getId());
