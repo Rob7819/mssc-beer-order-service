@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.github.sfg-beer-works</groupId>
         <artifactId>sfg-brewery-bom</artifactId>
-        <version>1.0.13</version>
+        <version>1.0.16</version>
     </parent>
     <groupId>guru.springframework</groupId>
     <artifactId>mssc-beer-order-service</artifactId>
@@ -51,7 +51,11 @@
             <artifactId>awaitility</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.2.32</version>
+        </dependency>
     </dependencies>
 
     <repositories>
